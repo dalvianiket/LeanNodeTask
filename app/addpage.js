@@ -2,17 +2,18 @@ import React, { Component } from 'react';
 import { TextInput, Picker, View } from 'react-native';
 import { Grid, Col, Row, Button, Text } from 'native-base';
 import utils from './../app/lib/utils';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import api from './lib/api';
 
-const Header=()=>(
-    <View style={{flex: 1, marginRight: "10%"}}>
-        <Text style={{fontWeight: 'bold', fontSize: 18, alignSelf: 'center'}}>Add Place</Text>
+const Header = () => (
+    <View style={{ flex: 1, marginRight: "10%" }}>
+        <Text style={{ fontWeight: 'bold', fontSize: 18, alignSelf: 'center' }}>Add Place</Text>
     </View>
 )
 
 export default class Addpage extends Component {
     static navigationOptions = {
-        headerTitle: <Header/>,
+        headerTitle: <Header />,
         headerTextStyle:
         {
             textAlign: 'center',
@@ -24,6 +25,7 @@ export default class Addpage extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            latLong: this.props.navigation.getParam('latLong'),
             placeName: '',
             mobileNumber: '',
             placeType: 'Home',
@@ -31,12 +33,9 @@ export default class Addpage extends Component {
         }
     }
 
-    componentWillMount = () => {
-        console.log(this.state.type)
-    }
-    //validation
+    //validations before submit values to the firebase
     validate() {
-        if(this.state.placeName == '' || this.state.mobileNumber == ''){
+        if (this.state.placeName == '' || this.state.mobileNumber == '') {
             utils.alertMessage("Please enter values");
             return false;
         }
@@ -44,7 +43,8 @@ export default class Addpage extends Component {
             utils.alertMessage("Place name should be more than 4 chars");
             return false;
         }
-        if(this.state.mobileNumber.length > 10 || this.state.mobileNumber.length < 10){
+        //restricting user to enter numberic value by providing numberic keyboard
+        if (this.state.mobileNumber.length > 10 || this.state.mobileNumber.length < 10) {
             utils.alertMessage("Mobile number must be of 10 digits")
             return false;
         }
@@ -52,17 +52,25 @@ export default class Addpage extends Component {
             return true;
         }
     }
-    //render picker item
+
+    //render place type for select place picker
     renderPickerItem() {
-        return this.state.types.map((result) =>
-            <Picker.Item label={result.value} value={result.value} />
+        return this.state.types.map((result, index) =>
+            <Picker.Item key={index} label={result.value} value={result.value} />
         )
     }
-    //submit details
-    submitDetails(){
-        if(this.validate()){
-            console.log('success')
-            this.props.navigation.navigate("MainScreen")
+
+    //on submit store given data on firebase database 
+    submitDetails() {
+        if (this.validate()) {
+            api.setData(this.state.placeName, this.state.latLong[0].coordinate.latitude,
+                this.state.latLong[0].coordinate.longitude, this.state.placeType,
+                this.state.mobileNumber).then(() => {
+                    console.log("I am here only")
+                    this.props.navigation.navigate("MainScreen")
+                }).catch(error => {
+                    console.log(error.message)
+                })
         }
     }
 
@@ -113,9 +121,9 @@ export default class Addpage extends Component {
 
 
                     <Row>
-                        <Col style={{margin: '5%'}}>
+                        <Col style={{ margin: '5%' }}>
                             <Button rounded info onPress={() => this.submitDetails()}>
-                                <Text style={{paddingLeft: '10%', paddingRight:'10%'}}>Submit</Text>
+                                <Text style={{ paddingLeft: '10%', paddingRight: '10%' }}>Submit</Text>
                             </Button>
                         </Col>
                     </Row>
