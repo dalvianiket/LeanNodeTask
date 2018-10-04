@@ -18,8 +18,7 @@ var api = {
                 type: type,
                 phone: phone
             }, config.apiconfig()).then(result => {
-                console.log(result)
-                resolve(result)
+                resolve(result.data)
             }).catch(err => reject(err.message))
         })
     }

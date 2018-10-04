@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, Callout } from 'react-native-maps';
 import { Button, Text, Icon } from 'native-base';
 import utils from './lib/utils';
 import api from './lib/api';
@@ -30,8 +30,8 @@ export default class Mainscreen extends Component {
             ...this.state.userData
             , {
               coordinate: coordinateData,
-              placename: result.name,
-              placeType: result.type
+              name: result.name,
+              type: result.type
             }
           ]
         })
@@ -41,7 +41,6 @@ export default class Mainscreen extends Component {
 
   //fetch lat long on user click
   onMapPress(e) {
-    console.log(e.nativeEvent.coordinate)
     this.setState({
       markers: [
         {
@@ -64,17 +63,36 @@ export default class Mainscreen extends Component {
     }
   }
 
+  //customize marker title
+  renderMarkerDetails(type, name) {
+    return (
+      <Callout tooltip style={styles.customView}>
+        <View style={{ backgroundColor: "white", width: 200, flex: 1, borderRadius: 5 }}>
+          <Text style={{ alignSelf: 'center', justifyContent: 'center', flex: 1, fontWeight: 'bold', fontSize: 18 }}>
+            <Icon name={type== "Home"? "home" : type== "Restaurant"? "ios-pizza": type== "Park"? "md-flower": null} />
+            {type}
+          </Text>
+          <Text style={{ alignSelf: 'center', justifyContent: 'center', flex: 1 }}>{name}</Text>
+        </View>
+      </Callout>
+    )
+  }
+
   //render previous location on maps by using firebase database
   renderUserData() {
     if (this.state.userData.length > 0) {
-      return this.state.userData.map((result, index) => 
+      return this.state.userData.map((result, index) =>
         <Marker
           key={index}
           coordinate={result.coordinate}
           pinColor={"green"}
+          calloutOffset={{ x: -8, y: 28 }}
+          calloutAnchor={{ x: 0.5, y: 0.4 }}
           title={result.type}
           description={result.name}
-        />
+        >
+          {this.renderMarkerDetails(result.type, result.name)}
+        </Marker>
       )
     }
   }
@@ -105,7 +123,6 @@ export default class Mainscreen extends Component {
               description="Why this is not showing"
             />
           ))}
-
           {this.renderUserData()}
         </MapView>
 
