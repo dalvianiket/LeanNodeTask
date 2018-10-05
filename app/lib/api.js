@@ -1,26 +1,30 @@
 import axios from 'axios';
 import config from './config';
+import utils from './utils';
+import './storage';
+
 
 //handling asynchronous call through axios
 var api = {
-    getData: function () {
+    getData: function (baseURL) {
         return new Promise(function (resolve, reject) {
-            axios.get("http://192.168.56.1:5500/get", config.apiconfig()).then(result => {
+            axios.get(baseURL, config.apiconfig()).then(result => {
                 resolve(result.data)
-            }).catch(err => reject(err.message))
+            }).catch(err => utils.alertMessage(err.message))
         })
     },
-    setData: function (name, lat, lang, type, phone) {
+    setData: function (name, lat, lang, type, phone, baseURL) {
         return new Promise(function (resolve, reject) {
-            axios.post("http://192.168.56.1:5500/set", {
+            axios.post(baseURL, {
                 name: name,
                 lat: lat,
                 lang: lang,
                 type: type,
                 phone: phone
             }, config.apiconfig()).then(result => {
+                console.log(result)
                 resolve(result.data)
-            }).catch(err => reject(err.message))
+            }).catch(err => utils.alertMessage(err.message))
         })
     }
 }

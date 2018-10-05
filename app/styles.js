@@ -1,62 +1,68 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
-const styles=StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
-      ...StyleSheet.absoluteFillObject,
-      flex: 1,
-      justifyContent: 'flex-end',
-      alignItems: 'center',
+        ...StyleSheet.absoluteFillObject,
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
     },
     map: {
-      ...StyleSheet.absoluteFillObject,
+        ...StyleSheet.absoluteFillObject,
     },
     markerView: {
-        backgroundColor: "white", 
-        width: 200, 
-        flex: 1, 
-        borderRadius: 5 
+        backgroundColor: "white",
+        width: 200,
+        flex: 1,
+        borderRadius: 5
     },
     markerTitleText: {
-        alignSelf: 'center', 
-        justifyContent: 'center', 
-        flex: 1, 
-        fontWeight: 'bold', 
-        fontSize: 18 
-    }, 
-    markerDescriptionText:{
-        alignSelf: 'center', 
-        justifyContent: 'center', 
-        flex: 1 
+        alignSelf: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        fontWeight: 'bold',
+        fontSize: 18
+    },
+    markerDescriptionText: {
+        alignSelf: 'center',
+        justifyContent: 'center',
+        flex: 1
+    },
+    modalView: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     // AddPage Stylesheet
-    headerView:{
-        flex: 1, 
+    headerView: {
+        flex: 1,
         marginRight: "10%"
     },
-    headerTitle:{
-        fontWeight: 'bold', 
-        fontSize: 18, 
+    headerTitle: {
+        fontWeight: 'bold',
+        fontSize: 18,
         alignSelf: 'center'
     },
     selectPlaceCol: {
-        margin: "5%", 
+        margin: "5%",
         paddingTop: '3%'
     },
     selectPlaceText: {
-        flex: 1, 
-        fontWeight: 'bold', 
-        justifyContent: 'center' 
+        flex: 1,
+        fontWeight: 'bold',
+        justifyContent: 'center'
     },
     defaultCol: {
         margin: '5%'
     },
     textFieldStyle: {
-        height: 40, 
-        borderColor: 'gray', 
+        height: 40,
+        borderColor: 'gray',
         borderBottomWidth: 1
     },
     buttonStyle: {
-        paddingLeft: '10%', 
+        paddingLeft: '10%',
         paddingRight: '10%'
     },
     customMarkerView: {
@@ -65,4 +71,4 @@ const styles=StyleSheet.create({
     }
 });
 
-  export default styles;
+export default styles;

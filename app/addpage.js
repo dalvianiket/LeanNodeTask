@@ -27,6 +27,7 @@ export default class Addpage extends Component {
         super(props);
         this.state = {
             latLong: this.props.navigation.getParam('latLong'),
+            url: this.props.navigation.getParam('url'),
             placeName: '',
             mobileNumber: '',
             placeType: 'Home',
@@ -63,11 +64,10 @@ export default class Addpage extends Component {
 
     //on submit store given data on firebase database 
     submitDetails() {
-        console.log("button clicked!")
         if (this.validate()) {
             api.setData(this.state.placeName, this.state.latLong[0].coordinate.latitude,
                 this.state.latLong[0].coordinate.longitude, this.state.placeType,
-                this.state.mobileNumber).then(() => {
+                this.state.mobileNumber, this.state.url+"/set").then(() => {
                     this.props.navigation.navigate("MainScreen")
                 }).catch(error => {
                     console.log(error)
