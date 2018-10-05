@@ -4,6 +4,7 @@ import MapView, { Marker, Callout } from 'react-native-maps';
 import { Button, Text, Icon } from 'native-base';
 import utils from './lib/utils';
 import api from './lib/api';
+import styles from './styles';
 
 export default class Mainscreen extends Component {
   static navigationOptions = {
@@ -19,6 +20,7 @@ export default class Mainscreen extends Component {
   }
 
   componentDidMount = () => {
+    //fetching data from firebase tabe
     api.getData().then((data) => {
       data.map((result, index) => {
         let coordinateData = {
@@ -66,14 +68,19 @@ export default class Mainscreen extends Component {
   //customize marker title
   renderMarkerDetails(type, name) {
     return (
-      <Callout tooltip style={styles.customView}>
-        <View style={{ backgroundColor: "white", width: 200, flex: 1, borderRadius: 5 }}>
-          <Text style={{ alignSelf: 'center', justifyContent: 'center', flex: 1, fontWeight: 'bold', fontSize: 18 }}>
+      <Callout tooltip style={styles.customMarkerView}>
+          <View style={{flex: 1, flexDirection: 'row'}}>
+          <View style={{justifyContent: 'flex-start', paddingRight: 10, paddingLeft: 10}}>
             <Icon name={type== "Home"? "home" : type== "Restaurant"? "ios-pizza": type== "Park"? "md-flower": null} />
-            {type}
-          </Text>
-          <Text style={{ alignSelf: 'center', justifyContent: 'center', flex: 1 }}>{name}</Text>
-        </View>
+          </View>
+
+            <View>
+              <Text style={styles.markerTitleText}>{type}</Text>
+            </View>
+          </View>
+            <View>
+              <Text style={styles.markerDescriptionText}>{name}</Text>
+            </View>
       </Callout>
     )
   }
@@ -134,14 +141,3 @@ export default class Mainscreen extends Component {
     )
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject,
-  },
-});

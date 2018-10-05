@@ -4,10 +4,11 @@ import { Grid, Col, Row, Button, Text } from 'native-base';
 import utils from './../app/lib/utils';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import api from './lib/api';
+import styles from './styles';
 
 const Header = () => (
-    <View style={{ flex: 1, marginRight: "10%" }}>
-        <Text style={{ fontWeight: 'bold', fontSize: 18, alignSelf: 'center' }}>Add Place</Text>
+    <View style={styles.headerView}>
+        <Text style={styles.headerTitle}>Add Place</Text>
     </View>
 )
 
@@ -82,8 +83,8 @@ export default class Addpage extends Component {
                 bounces={false}>
                 <Grid>
                     <Row>
-                        <Col style={{ margin: "5%", paddingTop: '3%' }}>
-                            <Text style={{ flex: 1, fontWeight: 'bold', justifyContent: 'center' }}>Select type of place: </Text>
+                        <Col style={styles.selectPlaceCol}>
+                            <Text style={styles.selectPlaceText}>Select type of place: </Text>
                         </Col>
                         <Col style={{ margin: "5%" }}>
                             <Picker
@@ -97,10 +98,10 @@ export default class Addpage extends Component {
                     </Row>
 
                     <Row>
-                        <Col style={{ margin: "5%", height: 20 }}>
+                        <Col style={styles.defaultCol}>
                             <TextInput
                                 placeholder="Place Name"
-                                style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }}
+                                style={styles.textFieldStyle}
                                 onChangeText={(placeName) => this.setState({ placeName })}
                                 value={this.state.placeName}
                             />
@@ -108,11 +109,11 @@ export default class Addpage extends Component {
                     </Row>
 
                     <Row>
-                        <Col style={{ margin: "5%" }}>
+                        <Col style={styles.defaultCol}>
                             <TextInput
                                 placeholder="Phone Number"
                                 keyboardType="phone-pad"
-                                style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }}
+                                style={styles.textFieldStyle}
                                 onChangeText={(mobileNumber) => this.setState({ mobileNumber })}
                                 value={this.state.mobileNumber}
                             />
@@ -121,9 +122,9 @@ export default class Addpage extends Component {
 
 
                     <Row>
-                        <Col style={{ margin: '5%' }}>
+                        <Col style={styles.defaultCol}>
                             <Button rounded info onPress={() => this.submitDetails()}>
-                                <Text style={{ paddingLeft: '10%', paddingRight: '10%' }}>Submit</Text>
+                                <Text style={ styles.buttonStyle}>Submit</Text>
                             </Button>
                         </Col>
                     </Row>

@@ -1,3 +1,5 @@
+//all config details will store in this file
+
 var config = {
     apiconfig: function () {
         return {
