@@ -33,6 +33,14 @@ In the project folder run the follow command
 `react-native run-android`
 Make sure you have an android device connected to the machine in the debug mode
 
+#known issues
+1. Places is not updated immediately. Need to reload the app. This is achievable but due to time constraints havent done this.
+2. Current map location is fixed.
+3. Zoom level 3 makes the map look very small. Hence the zoom level is adjusted accordingly.
+4. Loader is missing.
 
-
+#todo
+1. Update the list of markers based on the newly added marker.
+2. Add Loader.
+3. Initial position of the map is set by default. To make it dynamic based on the users location.
 
