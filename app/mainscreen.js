@@ -20,7 +20,6 @@ export default class Mainscreen extends Component {
       modalVisible: true,
       ipText: '',
       url: '',
-      check: false,
     }
   }
 

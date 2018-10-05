@@ -67,7 +67,7 @@ export default class Addpage extends Component {
         if (this.validate()) {
             api.setData(this.state.placeName, this.state.latLong[0].coordinate.latitude,
                 this.state.latLong[0].coordinate.longitude, this.state.placeType,
-                this.state.mobileNumber, this.state.url+"/set").then(() => {
+                this.state.mobileNumber, this.state.url + "/set").then(() => {
                     this.props.navigation.navigate("MainScreen")
                 }).catch(error => {
                     console.log(error)
@@ -124,7 +124,7 @@ export default class Addpage extends Component {
                     <Row>
                         <Col style={styles.defaultCol}>
                             <Button rounded info onPress={() => this.submitDetails()}>
-                                <Text style={ styles.buttonStyle}>Submit</Text>
+                                <Text style={styles.buttonStyle}>Submit</Text>
                             </Button>
                         </Col>
                     </Row>
