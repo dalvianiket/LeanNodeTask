@@ -66,6 +66,8 @@ const styles = StyleSheet.create({
         paddingRight: '10%'
     },
     customMarkerView: {
+        width: 150,
+        borderRadius: 10,
         backgroundColor: 'white',
         margin: 10
     }

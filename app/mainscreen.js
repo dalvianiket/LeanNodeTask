@@ -28,6 +28,19 @@ export default class Mainscreen extends Component {
     this.setURL();
   }
 
+  //update component after submit data to addpage
+  componentWillReceiveProps = (nextProps, nextState) => {
+    if (nextProps.navigation.state.params.setValue == "addPage") {
+      this.changeValues()
+    }
+  }
+
+  changeValues() {
+    this.setState({markers: []}, ()=>{
+      this.fetchData(this.state.url)
+    })
+  }
+
   //fetch lat long on user click
   onMapPress(e) {
     this.setState({
@@ -57,7 +70,7 @@ export default class Mainscreen extends Component {
   renderMarkerDetails(type, name) {
     return (
       <Callout tooltip style={styles.customMarkerView}>
-        <View style={{ flex: 1, flexDirection: 'row' }}>
+        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
           <View style={{ justifyContent: 'flex-start', paddingRight: 10, paddingLeft: 10 }}>
             <Icon name={type == "Home" ? "home" : type == "Restaurant" ? "ios-pizza" : type == "Park" ? "md-flower" : null} />
           </View>
@@ -80,7 +93,7 @@ export default class Mainscreen extends Component {
         <Marker
           key={index}
           coordinate={result.coordinate}
-          pinColor={result.type == "Home" ? "blue" : result.type == "Park" ? "green" ? result.type == "Restaurant" : "orange" : "cyan"}
+          pinColor={result.type == "Home" ? "blue" : result.type == "Park" ? "green" : result.type == "Restaurant" ? "orange" : "cyan"}
           calloutOffset={{ x: -8, y: 28 }}
           calloutAnchor={{ x: 0.5, y: 0.4 }}
           title={result.type}
@@ -215,7 +228,7 @@ export default class Mainscreen extends Component {
         <Button primary onPress={() => this.setState({ modalVisible: true })}>
           <Text>Reset IP</Text>
         </Button>
-        
+
         <Button full info onPress={() => { this.addPage() }}>
           <Text>Add Place</Text>
         </Button>

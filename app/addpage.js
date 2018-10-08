@@ -68,7 +68,9 @@ export default class Addpage extends Component {
             api.setData(this.state.placeName, this.state.latLong[0].coordinate.latitude,
                 this.state.latLong[0].coordinate.longitude, this.state.placeType,
                 this.state.mobileNumber, this.state.url + "/set").then(() => {
-                    this.props.navigation.navigate("MainScreen")
+                    this.props.navigation.navigate("MainScreen", {
+                        setValue: "addPage"
+                    })
                 }).catch(error => {
                     console.log(error)
                 })
