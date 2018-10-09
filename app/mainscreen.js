@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Modal, TextInput } from 'react-native';
+import { View, StyleSheet, Modal, TextInput, ActivityIndicator } from 'react-native';
 import MapView, { Marker, Callout } from 'react-native-maps';
 import { Button, Text, Icon } from 'native-base';
 import utils from './lib/utils';
@@ -20,6 +20,7 @@ export default class Mainscreen extends Component {
       modalVisible: true,
       ipText: '',
       url: '',
+      loading: false,
     }
   }
 
@@ -36,7 +37,7 @@ export default class Mainscreen extends Component {
   }
 
   changeValues() {
-    this.setState({markers: []}, ()=>{
+    this.setState({ markers: [] }, () => {
       this.fetchData(this.state.url)
     })
   }
@@ -64,73 +65,6 @@ export default class Mainscreen extends Component {
     else {
       utils.alertMessage("Please select location before add place")
     }
-  }
-
-  //customize marker title
-  renderMarkerDetails(type, name) {
-    return (
-      <Callout tooltip style={styles.customMarkerView}>
-        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
-          <View style={{ justifyContent: 'flex-start', paddingRight: 10, paddingLeft: 10 }}>
-            <Icon name={type == "Home" ? "home" : type == "Restaurant" ? "ios-pizza" : type == "Park" ? "md-flower" : null} />
-          </View>
-
-          <View>
-            <Text style={styles.markerTitleText}>{type}</Text>
-          </View>
-        </View>
-        <View>
-          <Text style={styles.markerDescriptionText}>{name}</Text>
-        </View>
-      </Callout>
-    )
-  }
-
-  //render previous location on maps by using firebase database
-  renderUserData() {
-    if (this.state.userData.length > 0) {
-      return this.state.userData.map((result, index) =>
-        <Marker
-          key={index}
-          coordinate={result.coordinate}
-          pinColor={result.type == "Home" ? "blue" : result.type == "Park" ? "green" : result.type == "Restaurant" ? "orange" : "cyan"}
-          calloutOffset={{ x: -8, y: 28 }}
-          calloutAnchor={{ x: 0.5, y: 0.4 }}
-          title={result.type}
-          description={result.name}
-        >
-          {this.renderMarkerDetails(result.type, result.name)}
-        </Marker>
-      )
-    }
-  }
-
-  //Asking user for machine IP adress
-  renderModal() {
-    return (
-      <Modal
-        animationType="slide"
-        transparent={false}
-        visible={this.state.modalVisible}
-      >
-        <View style={styles.modalView}>
-          <View>
-            <TextInput
-              placeholder="Enter machine IP adress"
-              style={styles.textFieldStyle}
-              onChangeText={(ipText) => this.setState({ ipText })}
-              value={this.state.ipText}
-            />
-            <View style={{ margin: '5%' }}>
-              <Button
-                onPress={() => { this.submitIP() }}>
-                <Text>Submit</Text>
-              </Button>
-            </View>
-          </View>
-        </View>
-      </Modal>
-    )
   }
 
   submitIP() {
@@ -163,24 +97,27 @@ export default class Mainscreen extends Component {
 
   // fetch data from firebase
   fetchData(baseURL) {
-    api.getData(baseURL + "/get").then((data) => {
-      data.map((result, index) => {
-        let coordinateData = {
-          longitude: parseFloat(result.lang),
-          latitude: parseFloat(result.lat)
-        }
-        this.setState({
-          userData: [
-            ...this.state.userData
-            , {
-              coordinate: coordinateData,
-              name: result.name,
-              type: result.type
-            }
-          ]
+    this.setState({ loading: true }, () => {
+      api.getData(baseURL + "/get").then((data) => {
+        data.map((result, index) => {
+          let coordinateData = {
+            longitude: parseFloat(result.lang),
+            latitude: parseFloat(result.lat)
+          }
+          this.setState({
+            userData: [
+              ...this.state.userData
+              , {
+                coordinate: coordinateData,
+                name: result.name,
+                type: result.type
+              }
+            ],
+            loading: false
+          })
         })
-      })
-    }).catch(err => console.log(err))
+      }).catch(err => console.log(err))
+    })
   }
 
   //checking if IP is present in localstorage
@@ -195,6 +132,90 @@ export default class Mainscreen extends Component {
         this.setState({ modalVisible: false })
       }
     }).catch(err => { console.log(err) })
+  }
+
+  //render previous location on maps by using firebase database
+  renderUserData() {
+    if (this.state.userData.length > 0) {
+      return this.state.userData.map((result, index) =>
+        <Marker
+          key={index}
+          coordinate={result.coordinate}
+          pinColor={result.type == "Home" ? "blue" : result.type == "Park" ? "green" : result.type == "Restaurant" ? "orange" : "cyan"}
+          calloutOffset={{ x: -8, y: 28 }}
+          calloutAnchor={{ x: 0.5, y: 0.4 }}
+          title={result.type}
+          description={result.name}
+        >
+          {this.renderMarkerDetails(result.type, result.name)}
+        </Marker>
+      )
+    }
+  }
+
+  //customize marker title
+  renderMarkerDetails(type, name) {
+    return (
+      <Callout tooltip style={styles.customMarkerView}>
+        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
+          <View style={{ justifyContent: 'flex-start', paddingRight: 10, paddingLeft: 10 }}>
+            <Icon name={type == "Home" ? "home" : type == "Restaurant" ? "ios-pizza" : type == "Park" ? "md-flower" : null} />
+          </View>
+
+          <View>
+            <Text style={styles.markerTitleText}>{type}</Text>
+          </View>
+        </View>
+        <View>
+          <Text style={styles.markerDescriptionText}>{name}</Text>
+        </View>
+      </Callout>
+    )
+  }
+
+  //Asking user for machine IP adress
+  renderModal() {
+    return (
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={this.state.modalVisible}
+      >
+        <View style={styles.modalView}>
+          <View>
+            <TextInput
+              placeholder="Enter machine IP adress"
+              style={styles.textFieldStyle}
+              onChangeText={(ipText) => this.setState({ ipText })}
+              value={this.state.ipText}
+            />
+            <View style={{ margin: '5%' }}>
+              <Button
+                onPress={() => { this.submitIP() }}>
+                <Text>Submit</Text>
+              </Button>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    )
+  }
+
+  renderSpinner() {
+    return (
+      <Modal
+        transparent={true}
+        animationType={'none'}
+        visible={this.state.loading}
+        onRequestClose={() => { console.log('close modal') }}>
+        <View style={styles.modalBackground}>
+          <View style={styles.activityIndicatorWrapper}>
+            <ActivityIndicator
+              animating={this.state.loading} />
+          </View>
+        </View>
+      </Modal>
+    )
   }
 
   render() {
@@ -213,6 +234,7 @@ export default class Mainscreen extends Component {
           maxZoomLevel={20}
           onPress={(e) => this.onMapPress(e)}
         >
+
           {/* rendering marker on basis of user click */}
           {this.state.markers.map((marker, index) => (
             <Marker
@@ -225,6 +247,7 @@ export default class Mainscreen extends Component {
         </MapView>
 
         {this.renderModal()}
+        {this.renderSpinner()}
         <Button primary onPress={() => this.setState({ modalVisible: true })}>
           <Text>Reset IP</Text>
         </Button>

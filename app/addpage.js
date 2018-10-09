@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TextInput, Picker, View } from 'react-native';
+import { TextInput, Picker, View, Platform } from 'react-native';
 import { Grid, Col, Row, Button, Text } from 'native-base';
 import utils from './../app/lib/utils';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -84,7 +84,7 @@ export default class Addpage extends Component {
                 keyboardShouldPersistTaps='always'
                 bounces={false}>
                 <Grid>
-                    <Row>
+                    <Row style={Platform.OS == 'ios' && styles.dropdownRowHeight}>
                         <Col style={styles.selectPlaceCol}>
                             <Text style={styles.selectPlaceText}>Select type of place: </Text>
                         </Col>
@@ -92,14 +92,14 @@ export default class Addpage extends Component {
                             <Picker
                                 mode={'dropdown'}
                                 selectedValue={this.state.placeType}
-                                style={{ width: '100%' }}
+                                style={{ width: "100%" }}
                                 onValueChange={(itemValue, itemIndex) => this.setState({ placeType: itemValue })}>
                                 {this.renderPickerItem()}
                             </Picker>
                         </Col>
                     </Row>
 
-                    <Row>
+                    <Row style={Platform.OS == 'ios' && styles.placeNameFieldStyle}>
                         <Col style={styles.defaultCol}>
                             <TextInput
                                 placeholder="Place Name"

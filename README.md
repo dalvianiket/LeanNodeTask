@@ -4,7 +4,7 @@ Clone above git repository by below command in terminal
 `git clone https://github.com/dalvianiket/LeanNodeTask.git`
 
 ## How to run mobile application?
-Please install the application from the android/app/build/outputs/apks/release/app-release.apk
+Please install the application from the app-release.apk
 
 After installation, the first screen to load will ask you to enter the ip (Only the ip) of the system on which the nodeJS server is running for it to connect to the backend (Please follow nodesJS servers readme for installation). This ip is stored in localstorage for subsequent openings. If you wish to reset the ip, we have provided a button for it.
 
@@ -34,10 +34,8 @@ In the project folder run the follow command
 Make sure you have an android device connected to the machine in the debug mode
 
 #known issues
-1. Places is not updated immediately. Need to reload the app. This is achievable but due to time constraints havent done this.
-2. Current map location is fixed.
-3. Zoom level 3 makes the map look very small. Hence the zoom level is adjusted accordingly.
-4. Loader is missing.
+1. Current map location is fixed.
+2. Zoom level 3 makes the map look very small. Hence the zoom level is adjusted accordingly.
 
 #todo
 1. Update the list of markers based on the newly added marker.

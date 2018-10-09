@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 const styles = StyleSheet.create({
     container: {
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     },
     selectPlaceCol: {
         margin: "5%",
-        paddingTop: '3%'
+        paddingTop: Platform.OS == 'ios' ? '20%' : '3%'
     },
     selectPlaceText: {
         flex: 1,
@@ -70,6 +70,29 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: 'white',
         margin: 10
+    },
+    placeNameFieldStyle: {
+        height: 100,
+        marginTop: "25%"
+    },
+    dropdownRowHeight: {
+        height: 100
+    },
+    modalBackground: {
+        flex: 1,
+        alignItems: 'center',
+        flexDirection: 'column',
+        justifyContent: 'space-around',
+        backgroundColor: '#00000040'
+    },
+    activityIndicatorWrapper: {
+        backgroundColor: '#FFFFFF',
+        height: 100,
+        width: 100,
+        borderRadius: 10,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-around'
     }
 });
 
