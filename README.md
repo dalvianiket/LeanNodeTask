@@ -38,7 +38,5 @@ Make sure you have an android device connected to the machine in the debug mode
 2. Zoom level 3 makes the map look very small. Hence the zoom level is adjusted accordingly.
 
 #todo
-1. Update the list of markers based on the newly added marker.
-2. Add Loader.
-3. Initial position of the map is set by default. To make it dynamic based on the users location.
+1. Initial position of the map is set by default. To make it dynamic based on the users location.
 
